@@ -1,7 +1,6 @@
 import unittest
 import numpy as np
 from datetime import datetime
-from math import pi
 from src.features.build_features import convert_time
 
 class TestConvertTime(unittest.TestCase):
