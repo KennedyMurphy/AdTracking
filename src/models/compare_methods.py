@@ -154,6 +154,14 @@ def main():
 
     df = df.drop(columns='time_coords')
 
+    logger.info("Compare Methods: Undersampling class 0")
+    count_class_0, count_class_1 = df.is_attributed.value_counts()
+
+    df_class_0 = df[df['is_attributed'] == 0]
+    df_class_1 = df[df['is_attributed'] == 1]
+
+    df = pd.concat([df_class_1, df_class_0.sample(count_class_1)], axis=0)
+
     assert np.isin(features, df.columns).all()
     assert 'is_attributed' in df.columns
 
