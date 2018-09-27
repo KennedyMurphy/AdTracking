@@ -30,6 +30,8 @@ def compare_decision_tree(X, y, n_splits, test_size, metrics):
 
     results = None
 
+    temp = {"model": "Decision Tree"}
+
     for m in metrics:
         try:
             scores = cross_val_score(clf, X, y, cv=cv, scoring=m)
@@ -38,11 +40,12 @@ def compare_decision_tree(X, y, n_splits, test_size, metrics):
             continue
         logger.info("Compare Decision Tree: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
 
-        temp = pd.DataFrame({'model': "Decision Tree", "metric": m, "score": scores})
-        if results is None:
-            results = pd.DataFrame(temp)
-        else:
-            results = results.append(temp)
+        temp = {**temp, m: scores}
+
+    if results is None:
+        results = pd.DataFrame(temp)
+    else:
+        results = results.append(temp)
 
     return results
 
@@ -66,6 +69,8 @@ def compare_random_forest(X, y, n_splits, test_size, metrics):
 
     results = None
 
+    temp = {"model": "Random Forest"}
+
     for m in metrics:
         try:
             scores = cross_val_score(clf, X, y, cv=cv, scoring=m)
@@ -74,11 +79,12 @@ def compare_random_forest(X, y, n_splits, test_size, metrics):
             continue
         logger.info("Compare Random Forest: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
 
-        temp = pd.DataFrame({'model': "Random Forest", "metric": m, "score": scores})
-        if results is None:
-            results = pd.DataFrame(temp)
-        else:
-            results = results.append(temp)
+        temp = {**temp, m: scores}
+    
+    if results is None:
+        results = pd.DataFrame(temp)
+    else:
+        results = results.append(temp)
 
     return results
 
@@ -102,6 +108,8 @@ def compare_logistic_regression(X, y, n_splits, test_size, metrics):
 
     results = None
 
+    temp = {"model": "Logistic Regression"}
+
     for m in metrics:
         try:
             scores = cross_val_score(logreg, X, y, cv=cv, scoring=m)
@@ -110,11 +118,12 @@ def compare_logistic_regression(X, y, n_splits, test_size, metrics):
             continue
         logger.info("Compare Logistic Regr.: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
 
-        temp = pd.DataFrame({'model': "Logistic Regression", "metric": m, "score": scores})
-        if results is None:
-            results = pd.DataFrame(temp)
-        else:
-            results = results.append(temp)
+        temp = {**temp, m: scores}
+        
+    if results is None:
+        results = pd.DataFrame(temp)
+    else:
+        results = results.append(temp)
 
     return results
 
@@ -127,7 +136,7 @@ def main():
     logger = logging.getLogger(__name__)
     logger.info("Compare Methods: Loading data set")
 
-    n_splits=100
+    n_splits=50
     test_size=0.3
     metrics = ('precision', 'recall', 'f1')
 
