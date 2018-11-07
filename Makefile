@@ -38,6 +38,10 @@ clean:
 lint:
 	flake8 src
 
+## Reformat the src directory to conform to the Google style guide
+pretty:
+	yapf -ir --style google src/
+
 ## Upload Data to S3
 sync_data_to_s3:
 ifeq (default,$(PROFILE))

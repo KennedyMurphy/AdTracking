@@ -10,6 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, ShuffleSplit
 
+
 # TODO: Handle UndefinedMetricWarning
 def compare_decision_tree(X, y, n_splits, test_size, metrics):
     """ Runs through k-fold cross validation for the random decision tree
@@ -25,7 +26,8 @@ def compare_decision_tree(X, y, n_splits, test_size, metrics):
     """
     logger = logging.getLogger(__name__)
     logger.info("Compare Decision Tree: Defining ShuffleSplit")
-    clf = DecisionTreeClassifier(max_depth=None, min_samples_split=n_splits, random_state=0)
+    clf = DecisionTreeClassifier(
+        max_depth=None, min_samples_split=n_splits, random_state=0)
     cv = ShuffleSplit(n_splits=n_splits, test_size=test_size, random_state=0)
 
     results = None
@@ -36,9 +38,12 @@ def compare_decision_tree(X, y, n_splits, test_size, metrics):
         try:
             scores = cross_val_score(clf, X, y, cv=cv, scoring=m)
         except ValueError:
-            logger.warning("Compare Decision Tree: %s cannot be calculated via cross_val_score" % m)
+            logger.warning(
+                "Compare Decision Tree: %s cannot be calculated via cross_val_score"
+                % m)
             continue
-        logger.info("Compare Decision Tree: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
+        logger.info("Compare Decision Tree: %s --  %0.4f (+/- %0.4f)" %
+                    (m, scores.mean(), scores.std() * 2))
 
         temp = {**temp, m: scores}
 
@@ -64,7 +69,11 @@ def compare_random_forest(X, y, n_splits, test_size, metrics):
     """
     logger = logging.getLogger(__name__)
     logger.info("Compare Random Forest: Defining ShuffleSplit")
-    clf = RandomForestClassifier(n_estimators=10, max_depth=None, min_samples_split=n_splits, random_state=0)
+    clf = RandomForestClassifier(
+        n_estimators=10,
+        max_depth=None,
+        min_samples_split=n_splits,
+        random_state=0)
     cv = ShuffleSplit(n_splits=n_splits, test_size=test_size, random_state=0)
 
     results = None
@@ -75,12 +84,15 @@ def compare_random_forest(X, y, n_splits, test_size, metrics):
         try:
             scores = cross_val_score(clf, X, y, cv=cv, scoring=m)
         except ValueError:
-            logger.warning("Compare Random Forest: %s cannot be calculated via cross_val_score" % m)
+            logger.warning(
+                "Compare Random Forest: %s cannot be calculated via cross_val_score"
+                % m)
             continue
-        logger.info("Compare Random Forest: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
+        logger.info("Compare Random Forest: %s --  %0.4f (+/- %0.4f)" %
+                    (m, scores.mean(), scores.std() * 2))
 
         temp = {**temp, m: scores}
-    
+
     if results is None:
         results = pd.DataFrame(temp)
     else:
@@ -114,12 +126,15 @@ def compare_logistic_regression(X, y, n_splits, test_size, metrics):
         try:
             scores = cross_val_score(logreg, X, y, cv=cv, scoring=m)
         except ValueError:
-            logger.warning("Compare Logistic Regr.: %s cannot be calculated via cross_val_score" % m)
+            logger.warning(
+                "Compare Logistic Regr.: %s cannot be calculated via cross_val_score"
+                % m)
             continue
-        logger.info("Compare Logistic Regr.: %s --  %0.4f (+/- %0.4f)" % (m, scores.mean(), scores.std() * 2))
+        logger.info("Compare Logistic Regr.: %s --  %0.4f (+/- %0.4f)" %
+                    (m, scores.mean(), scores.std() * 2))
 
         temp = {**temp, m: scores}
-        
+
     if results is None:
         results = pd.DataFrame(temp)
     else:
@@ -136,8 +151,8 @@ def main():
     logger = logging.getLogger(__name__)
     logger.info("Compare Methods: Loading data set")
 
-    n_splits=50
-    test_size=0.3
+    n_splits = 50
+    test_size = 0.3
     metrics = ('precision', 'recall', 'f1')
 
     features = ['ip', 'app', 'device', 'os', 'channel', 'time_x', 'time_y']
@@ -145,7 +160,7 @@ def main():
     with open("data/processed/train_sample.csv", "r") as f:
         df = pd.read_csv(f)
         f.close()
-    
+
     logger.info("Compare Methods: Adding features.")
     df['click_time'] = pd.to_datetime(df['click_time'])
     df['time_coords'] = df.click_time.apply(build_features.convert_time)
