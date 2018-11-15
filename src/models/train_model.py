@@ -9,7 +9,7 @@ from src.features import build_features
 from dotenv import find_dotenv, load_dotenv
 from sklearn.ensemble import RandomForestClassifier
 
-FILE_NAME = 'train_sample.csv'
+FILE_NAME = 'train.csv'
 FEATURES = ['ip', 'app', 'device', 'os', 'channel']
 N_SPLITS = 50
 N_ESTIMATORS = 10
