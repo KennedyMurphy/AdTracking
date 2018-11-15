@@ -34,3 +34,7 @@ del df
 
 logger.info("Prediction: Generating predictions")
 y_pred = clf.predict(X)
+y_pred = pd.DataFrame({'click_id': range(len(y_pred)), 'is_attributed': y_pred})
+
+logger.info("Prediction: Saving predictions to CSV")
+y_pred.to_csv('models/predictions.csv', index=False)

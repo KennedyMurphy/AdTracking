@@ -29,6 +29,14 @@ requirements: test_environment
 data: requirements
 	kaggle competitions download -c talkingdata-adtracking-fraud-detection -p data/processed/
 
+## Make train
+train:
+	$(PYTHON_INTERPRETER) src/models/train_model.py
+
+## Make test
+test:
+	$(PYTHON_INTERPRETER) src/models/predict_model.py
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
