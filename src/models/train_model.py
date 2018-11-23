@@ -10,7 +10,6 @@ from dotenv import find_dotenv, load_dotenv
 from sklearn.ensemble import RandomForestClassifier
 
 FILE_NAME = 'train.csv'
-FEATURES = ['ip', 'app', 'device', 'os', 'channel']
 N_SPLITS = 50
 N_ESTIMATORS = 10
 
@@ -18,12 +17,13 @@ def main():
     """ Manages feature extraction and model training.
     """
     logger = logging.getLogger(__name__)
-    logger.info("Train Model: Loading data from %s" % FILE_NAME)
-    df = pd.read_csv("data/processed/%s" % FILE_NAME)
+    df = build_features.feature_creation("data/processed/%s" % FILE_NAME)
 
     # Make sure that all FEATURES are in the data frame.
-    assert np.isin(FEATURES, df.columns).all()
     assert 'is_attributed' in df.columns
+
+    # Take note of the features that were extracted.
+    features = [c for c in df.columns if c != 'is_attributed']
 
     logger.info("Train Model: Measuring class balance.")
     count_class_0, count_class_1 = df.is_attributed.value_counts()
@@ -41,8 +41,8 @@ def main():
     del df_class_0
     del df_class_1
 
-    logger.info("Train Model: Extracting features %s" % ", ".join(FEATURES))
-    X = df[FEATURES].values
+    logger.info("Train Model: Extracting features %s" % ", ".join(features))
+    X = df[features].values
     y = df['is_attributed'].values
 
     # Remove the original data frame from memory
