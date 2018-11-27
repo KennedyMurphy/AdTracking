@@ -66,7 +66,7 @@ pytz==2018.5
 PyYAML==3.13
 pyzmq==17.1.2
 qtconsole==4.4.3
-requests==2.19.1
+requests==2.20.1
 rsa==3.4.2
 s3transfer==0.1.13
 scikit-learn==0.19.2
@@ -78,7 +78,7 @@ sklearn==0.0
 snowballstemmer==1.2.1
 Sphinx==1.8.0
 sphinxcontrib-websupport==1.1.0
--e git+https://github.com/KennedyMurphy/AdTracking.git@4622f95ec68b62cfcc25ec959fd8bca5ffc9c6ab#egg=src
+-e git+https://github.com/KennedyMurphy/AdTracking.git@de7d0cf78c05b6ca20e1a2d9b20e815d43a3e2e2#egg=src
 terminado==0.8.1
 testpath==0.3.1
 tornado==5.1.1
